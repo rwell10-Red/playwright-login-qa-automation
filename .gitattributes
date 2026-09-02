@@ -1,0 +1,21 @@
+# Normalize line endings to LF in the repository, CRLF on Windows checkout
+* text=auto
+
+# Python files — always LF
+*.py text eol=lf
+
+# JavaScript files — always LF
+*.js text eol=lf
+*.json text eol=lf
+
+# HTML files — always LF
+*.html text eol=lf
+
+# Markdown — always LF
+*.md text eol=lf
+
+# Binary files — no line ending conversion
+*.db binary
+*.png binary
+*.jpg binary
+*.zip binary

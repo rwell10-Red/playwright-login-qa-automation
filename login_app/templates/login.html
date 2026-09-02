@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — QA Practice App</title>
+  <style>
+    /* ── Reset & base ────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    /* ── Card ────────────────────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.10);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .card__logo {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .card__logo h1 {
+      font-size: 1.6rem;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+    }
+
+    .card__logo p {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    /* ── Alert banners ───────────────────────────────────────────── */
+    .alert {
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .alert--error   { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .alert--warning { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .alert--success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .alert--info    { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+    /* ── Lockout panel ───────────────────────────────────────────── */
+    .lockout {
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .lockout__icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+    .lockout h2 {
+      font-size: 1.1rem;
+      color: #b91c1c;
+      margin-bottom: 0.5rem;
+    }
+
+    .lockout p {
+      font-size: 0.875rem;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    /* ── Form ────────────────────────────────────────────────────── */
+    .form__group { margin-bottom: 1.1rem; }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.35rem;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: #111827;
+      background: #fff;
+      transition: border-color .2s;
+      /* WCAG: min touch target height */
+      min-height: 44px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79,70,229,.15);
+    }
+
+    input.is-invalid { border-color: #ef4444; }
+
+    .field-error {
+      font-size: 0.78rem;
+      color: #dc2626;
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    /* ── Remember me row ─────────────────────────────────────────── */
+    .form__remember {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .form__remember input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #4f46e5;
+      cursor: pointer;
+      min-height: unset;
+    }
+
+    .form__remember label {
+      margin: 0;
+      font-weight: 400;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    /* ── Submit button ───────────────────────────────────────────── */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      /* WCAG: min touch target */
+      min-height: 44px;
+      transition: background .2s, transform .1s;
+    }
+
+    .btn--primary {
+      background: #4f46e5;
+      color: #ffffff;
+    }
+
+    .btn--primary:hover  { background: #4338ca; }
+    .btn--primary:active { transform: scale(.98); }
+
+    /* ── Footer link ─────────────────────────────────────────────── */
+    .card__footer {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .card__footer a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .card__footer a:hover { text-decoration: underline; }
+
+    /* ── Flash messages from Flask ───────────────────────────────── */
+    .flashes { list-style: none; margin-bottom: 1rem; }
+
+    /* ── Mobile — all targets ≥ 44 × 44 px (WCAG 2.1 TC_LOGIN_010) */
+    @media (max-width: 480px) {
+      .card { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="card" role="main">
+
+    <div class="card__logo">
+      <h1>QA Practice App</h1>
+      <p>Login Page — Week 1 Practical</p>
+    </div>
+
+    <!-- Flask flashed messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes" aria-live="polite">
+          {% for category, message in messages %}
+            <li class="alert alert--{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- TC_LOGIN_005: Account lockout panel -->
+    {% if lockout %}
+      <div class="lockout" id="lockout-message" role="alert">
+        <div class="lockout__icon" aria-hidden="true">🔒</div>
+        <h2>Account Locked</h2>
+        <p>
+          Your account has been locked due to too many failed attempts.<br>
+          Please <a href="{{ url_for('forgot_password') }}">reset your password</a>
+          or contact support.
+        </p>
+      </div>
+
+    {% else %}
+
+      <!-- TC_LOGIN_002 / TC_LOGIN_004: Generic error banner -->
+      {% if error %}
+        <div class="alert alert--error" id="error-message" role="alert">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('login') }}" novalidate id="login-form">
+
+        <!-- Email field -->
+        <div class="form__group">
+          <label for="email">Email address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="{{ email or '' }}"
+            placeholder="you@example.com"
+            autocomplete="email"
+            aria-required="true"
+            aria-describedby="email-error"
+            class="{{ 'is-invalid' if errors and errors.email else '' }}"
+          />
+          {% if errors and errors.email %}
+            <!-- TC_LOGIN_003: field-level validation message -->
+            <span class="field-error" id="email-error" role="alert">{{ errors.email }}</span>
+          {% else %}
+            <span class="field-error" id="email-error"></span>
+          {% endif %}
+        </div>
+
+        <!-- Password field -->
+        <div class="form__group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            aria-required="true"
+            aria-describedby="password-error"
+            class="{{ 'is-invalid' if errors and errors.password else '' }}"
+          />
+          {% if errors and errors.password %}
+            <!-- TC_LOGIN_003: field-level validation message -->
+            <span class="field-error" id="password-error" role="alert">{{ errors.password }}</span>
+          {% else %}
+            <span class="field-error" id="password-error"></span>
+          {% endif %}
+        </div>
+
+        <!-- TC_LOGIN_007: Remember Me checkbox -->
+        <div class="form__remember">
+          <input type="checkbox" id="remember_me" name="remember_me" />
+          <label for="remember_me">Remember me</label>
+        </div>
+
+        <button type="submit" class="btn btn--primary" id="login-btn">
+          Log in
+        </button>
+
+      </form>
+
+      <!-- TC_LOGIN_006: Forgot password link -->
+      <div class="card__footer">
+        <a href="{{ url_for('forgot_password') }}" id="forgot-password-link">
+          Forgot your password?
+        </a>
+      </div>
+
+    {% endif %}
+
+  </main>
+
+</body>
+</html>

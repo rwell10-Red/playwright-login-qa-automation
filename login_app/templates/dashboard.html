@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — QA Practice App</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+    }
+
+    /* ── Top nav ─────────────────────────────────────────────────── */
+    .navbar {
+      background: #1a1a2e;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .navbar__brand {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.3px;
+    }
+
+    .navbar__user {
+      color: #a5b4fc;
+      font-size: 0.875rem;
+    }
+
+    .btn-logout {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 44px;
+      min-width: 44px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-logout:hover { background: #dc2626; }
+
+    /* ── Main content ────────────────────────────────────────────── */
+    .container {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+    }
+
+    /* TC_LOGIN_001: Welcome message — Playwright checks for this */
+    .welcome-message {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .welcome-message h2 {
+      font-size: 1.5rem;
+      color: #1a1a2e;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-message p {
+      color: #6b7280;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Test case reference cards ───────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .info-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      border-left: 4px solid #4f46e5;
+    }
+
+    .info-card h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #4f46e5;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-card p {
+      font-size: 0.875rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      .navbar { padding: 0 1rem; }
+      .container { margin: 1.5rem auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation bar -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <span class="navbar__brand">QA Practice App</span>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <span class="navbar__user" id="nav-user-name">{{ user.name }}</span>
+      <a href="{{ url_for('logout') }}" class="btn-logout" id="logout-btn">Log out</a>
+    </div>
+  </nav>
+
+  <main class="container" role="main">
+
+    <!-- TC_LOGIN_001: Welcome message — Playwright asserts this is visible -->
+    <section class="welcome-message" id="welcome-section">
+      <h2 id="welcome-heading">Welcome, {{ user.name }}!</h2>
+      <p>You are successfully logged in to the QA Practice App.</p>
+      <span class="badge">&#10003; Session Active</span>
+    </section>
+
+    <!-- QA reference cards — show which test cases this page covers -->
+    <div class="cards-grid">
+
+      <div class="info-card">
+        <h3>TC_LOGIN_001</h3>
+        <p>Valid login — this dashboard confirms a successful authentication redirect.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>TC_LOGIN_007</h3>
+        <p>Remember Me — close and reopen your browser. If you land here without logging in, the persistent cookie is working.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>TC_LOGIN_008</h3>
+        <p>Session Timeout — leave this page idle for 30 minutes. The next action will redirect to login with a timeout message.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>TC_LOGIN_009</h3>
+        <p>Multi-Tab — open this app in a second tab, log out in this one, then try to navigate in the other tab.</p>
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>
