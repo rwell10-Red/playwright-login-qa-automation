@@ -33,7 +33,7 @@ Functional requirements describe what the system must do. Each requirement has a
 
 ### REQ-001 — Valid Login and Redirect
 
-**Jira Ticket:** PROJ-101
+**Jira Ticket:** PROJ-5
 **Priority:** High
 **Source:** Business need — core authentication flow
 
@@ -52,7 +52,7 @@ This is the primary function of the login page. Without this working correctly, 
 
 ### REQ-002 — Invalid Credentials Error Handling
 
-**Jira Ticket:** PROJ-102
+**Jira Ticket:** PROJ-6
 **Priority:** High
 **Source:** Security requirement + UX requirement
 
@@ -70,7 +70,7 @@ Revealing which field is wrong (e.g., "email not found") helps attackers enumera
 
 ### REQ-003 — Empty Field Validation
 
-**Jira Ticket:** PROJ-103
+**Jira Ticket:** PROJ-7
 **Priority:** High
 **Source:** UX requirement + form validation standard
 
@@ -89,7 +89,7 @@ Prevents unnecessary API calls and provides clear feedback to the user about wha
 
 ### REQ-004 — Security: Input Sanitization
 
-**Jira Ticket:** PROJ-104
+**Jira Ticket:** PROJ-8
 **Priority:** High
 **Source:** Security requirement — OWASP Top 10
 
@@ -108,7 +108,7 @@ SQL injection and XSS are the most common web application attacks (OWASP Top 10)
 
 ### REQ-005 — Account Lockout After Failed Attempts
 
-**Jira Ticket:** PROJ-105
+**Jira Ticket:** PROJ-9
 **Priority:** High
 **Source:** Security requirement — brute force protection
 
@@ -128,7 +128,7 @@ Prevents brute force attacks where an attacker repeatedly guesses passwords.
 
 ### REQ-006 — Forgot Password / Password Reset Flow
 
-**Jira Ticket:** PROJ-106
+**Jira Ticket:** PROJ-10
 **Priority:** Medium
 **Source:** Business requirement — user self-service
 
@@ -148,7 +148,7 @@ Users forget passwords. A self-service reset reduces support tickets and improve
 
 ### REQ-007 — Remember Me (Persistent Session)
 
-**Jira Ticket:** PROJ-107
+**Jira Ticket:** PROJ-11
 **Priority:** Medium
 **Source:** UX requirement — convenience feature
 
@@ -168,7 +168,7 @@ Improves user experience for users who regularly access the application from per
 
 ### REQ-008 — Session Timeout for Inactive Sessions
 
-**Jira Ticket:** PROJ-108
+**Jira Ticket:** PROJ-12
 **Priority:** High
 **Source:** Security requirement
 
@@ -188,7 +188,7 @@ Prevents unauthorized access if a user leaves their session open on an unattende
 
 ### REQ-009 — Multi-Tab Session Consistency
 
-**Jira Ticket:** PROJ-109
+**Jira Ticket:** PROJ-13
 **Priority:** Medium
 **Source:** Technical requirement — session state management
 
@@ -208,7 +208,7 @@ Users frequently work in multiple tabs. Inconsistent session state creates secur
 
 ### REQ-010 — Mobile Responsive Design
 
-**Jira Ticket:** PROJ-110
+**Jira Ticket:** PROJ-14
 **Priority:** Medium
 **Source:** UX requirement — multi-device support
 
@@ -232,11 +232,11 @@ Non-functional requirements describe how well the system must perform its functi
 
 | ID | Requirement | Priority | Jira Ticket |
 |---|---|---|---|
-| NFR-001 | Login page shall load in under 2 seconds on a standard broadband connection | Medium | PROJ-111 |
-| NFR-002 | The login page shall be WCAG 2.1 Level AA accessible | Medium | PROJ-112 |
-| NFR-003 | The system shall support at least 1,000 concurrent login requests without degradation | Low | PROJ-113 |
-| NFR-004 | All authentication tokens shall be transmitted over HTTPS only | High | PROJ-114 |
-| NFR-005 | Passwords shall never be stored in plain text — bcrypt hashing required | High | PROJ-115 |
+| NFR-001 | Login page shall load in under 2 seconds on a standard broadband connection | Medium | TBD |
+| NFR-002 | The login page shall be WCAG 2.1 Level AA accessible | Medium | TBD |
+| NFR-003 | The system shall support at least 1,000 concurrent login requests without degradation | Low | TBD |
+| NFR-004 | All authentication tokens shall be transmitted over HTTPS only | High | TBD |
+| NFR-005 | Passwords shall never be stored in plain text — bcrypt hashing required | High | TBD |
 
 ---
 
@@ -448,20 +448,20 @@ The RTM links every requirement to its Jira ticket, acceptance criteria, test ca
 
 | Req ID | Jira Ticket | Requirement Summary | Acceptance Criteria | Test Case ID | Test Case Title | Priority | Execution Status | Defect ID |
 |---|---|---|---|---|---|---|---|---|
-| REQ-001 | PROJ-101 | Valid login redirects to dashboard | AC-001 | TC_LOGIN_001 | Valid Login (Happy Path) | High | Not Run | — |
-| REQ-002 | PROJ-102 | Invalid credentials show generic error | AC-002 | TC_LOGIN_002 | Invalid Password | High | Not Run | — |
-| REQ-003 | PROJ-103 | Empty fields trigger validation messages | AC-003 | TC_LOGIN_003 | Empty Fields Submission | High | Not Run | — |
-| REQ-004 | PROJ-104 | SQL injection and XSS inputs are sanitized | AC-004 | TC_LOGIN_004 | Special Characters / Security | Medium | Not Run | — |
-| REQ-005 | PROJ-105 | Account locks after 5 failed attempts | AC-005 | TC_LOGIN_005 | Account Lockout | High | Not Run | — |
-| REQ-006 | PROJ-106 | Password reset email sent within 2 minutes | AC-006 | TC_LOGIN_006 | Forgot Password Flow | Medium | Not Run | — |
-| REQ-007 | PROJ-107 | Remember Me persists session 30 days | AC-007 | TC_LOGIN_007 | Remember Me Functionality | Medium | Not Run | — |
-| REQ-008 | PROJ-108 | Session expires after 30 min inactivity | AC-008 | TC_LOGIN_008 | Session Timeout | High | Not Run | — |
-| REQ-009 | PROJ-109 | Logout in one tab affects all tabs | AC-009 | TC_LOGIN_009 | Multiple Browser Tabs | Medium | Not Run | — |
-| REQ-010 | PROJ-110 | Login page usable on 375px mobile screen | AC-010 | TC_LOGIN_010 | Mobile Responsiveness | Medium | Not Run | — |
-| NFR-001 | PROJ-111 | Page loads under 2 seconds | — | TC_PERF_001 | Performance Load Test | Medium | Not Run | — |
-| NFR-002 | PROJ-112 | WCAG 2.1 Level AA accessible | — | TC_A11Y_001 | Accessibility Audit | Medium | Not Run | — |
-| NFR-004 | PROJ-114 | HTTPS only for auth tokens | — | TC_SEC_001 | HTTPS Token Transmission | High | Not Run | — |
-| NFR-005 | PROJ-115 | Passwords hashed with bcrypt | — | TC_SEC_002 | Password Storage Audit | High | Not Run | — |
+| REQ-001 | PROJ-5 | Valid login redirects to dashboard | AC-001 | TC_LOGIN_001 | Valid Login (Happy Path) | High | Not Run | — |
+| REQ-002 | PROJ-6 | Invalid credentials show generic error | AC-002 | TC_LOGIN_002 | Invalid Password | High | Not Run | — |
+| REQ-003 | PROJ-7 | Empty fields trigger validation messages | AC-003 | TC_LOGIN_003 | Empty Fields Submission | High | Not Run | — |
+| REQ-004 | PROJ-8 | SQL injection and XSS inputs are sanitized | AC-004 | TC_LOGIN_004 | Special Characters / Security | Medium | Not Run | — |
+| REQ-005 | PROJ-9 | Account locks after 5 failed attempts | AC-005 | TC_LOGIN_005 | Account Lockout | High | Not Run | — |
+| REQ-006 | PROJ-10 | Password reset email sent within 2 minutes | AC-006 | TC_LOGIN_006 | Forgot Password Flow | Medium | Not Run | — |
+| REQ-007 | PROJ-11 | Remember Me persists session 30 days | AC-007 | TC_LOGIN_007 | Remember Me Functionality | Medium | Not Run | — |
+| REQ-008 | PROJ-12 | Session expires after 30 min inactivity | AC-008 | TC_LOGIN_008 | Session Timeout | High | Not Run | — |
+| REQ-009 | PROJ-13 | Logout in one tab affects all tabs | AC-009 | TC_LOGIN_009 | Multiple Browser Tabs | Medium | Not Run | — |
+| REQ-010 | PROJ-14 | Login page usable on 375px mobile screen | AC-010 | TC_LOGIN_010 | Mobile Responsiveness | Medium | Not Run | — |
+| NFR-001 | TBD | Page loads under 2 seconds | — | TC_PERF_001 | Performance Load Test | Medium | Not Run | — |
+| NFR-002 | TBD | WCAG 2.1 Level AA accessible | — | TC_A11Y_001 | Accessibility Audit | Medium | Not Run | — |
+| NFR-004 | TBD | HTTPS only for auth tokens | — | TC_SEC_001 | HTTPS Token Transmission | High | Not Run | — |
+| NFR-005 | TBD | Passwords hashed with bcrypt | — | TC_SEC_002 | Password Storage Audit | High | Not Run | — |
 
 ---
 
