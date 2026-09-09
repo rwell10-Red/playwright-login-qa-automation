@@ -446,22 +446,22 @@ Feature: User Login
 
 The RTM links every requirement to its Jira ticket, acceptance criteria, test case, and current execution status. This is the master coverage document.
 
-| Req ID | Jira Ticket | Requirement Summary | Acceptance Criteria | Test Case ID | Test Case Title | Priority | Execution Status | Defect ID |
-|---|---|---|---|---|---|---|---|---|
-| REQ-001 | PROJ-5 | Valid login redirects to dashboard | AC-001 | TC_LOGIN_001 | Valid Login (Happy Path) | High | Not Run | — |
-| REQ-002 | PROJ-6 | Invalid credentials show generic error | AC-002 | TC_LOGIN_002 | Invalid Password | High | Not Run | — |
-| REQ-003 | PROJ-7 | Empty fields trigger validation messages | AC-003 | TC_LOGIN_003 | Empty Fields Submission | High | Not Run | — |
-| REQ-004 | PROJ-8 | SQL injection and XSS inputs are sanitized | AC-004 | TC_LOGIN_004 | Special Characters / Security | Medium | Not Run | — |
-| REQ-005 | PROJ-9 | Account locks after 5 failed attempts | AC-005 | TC_LOGIN_005 | Account Lockout | High | Not Run | — |
-| REQ-006 | PROJ-10 | Password reset email sent within 2 minutes | AC-006 | TC_LOGIN_006 | Forgot Password Flow | Medium | Not Run | — |
-| REQ-007 | PROJ-11 | Remember Me persists session 30 days | AC-007 | TC_LOGIN_007 | Remember Me Functionality | Medium | Not Run | — |
-| REQ-008 | PROJ-12 | Session expires after 30 min inactivity | AC-008 | TC_LOGIN_008 | Session Timeout | High | Not Run | — |
-| REQ-009 | PROJ-13 | Logout in one tab affects all tabs | AC-009 | TC_LOGIN_009 | Multiple Browser Tabs | Medium | Not Run | — |
-| REQ-010 | PROJ-14 | Login page usable on 375px mobile screen | AC-010 | TC_LOGIN_010 | Mobile Responsiveness | Medium | Not Run | — |
-| NFR-001 | TBD | Page loads under 2 seconds | — | TC_PERF_001 | Performance Load Test | Medium | Not Run | — |
-| NFR-002 | TBD | WCAG 2.1 Level AA accessible | — | TC_A11Y_001 | Accessibility Audit | Medium | Not Run | — |
-| NFR-004 | TBD | HTTPS only for auth tokens | — | TC_SEC_001 | HTTPS Token Transmission | High | Not Run | — |
-| NFR-005 | TBD | Passwords hashed with bcrypt | — | TC_SEC_002 | Password Storage Audit | High | Not Run | — |
+| Req ID | Jira Ticket | TestRail Case | Requirement Summary | Acceptance Criteria | Test Case ID | Test Case Title | Priority | Execution Status | Defect ID |
+|---|---|---|---|---|---|---|---|---|---|
+| REQ-001 | PROJ-5 | C46 | Valid login redirects to dashboard | AC-001 | TC_LOGIN_001 | Valid Login (Happy Path) | High | Not Run | — |
+| REQ-002 | PROJ-6 | C47 | Invalid credentials show generic error | AC-002 | TC_LOGIN_002 | Invalid Password | High | Not Run | — |
+| REQ-003 | PROJ-7 | C48 | Empty fields trigger validation messages | AC-003 | TC_LOGIN_003 | Empty Fields Submission | High | Not Run | — |
+| REQ-004 | PROJ-8 | C49 | SQL injection and XSS inputs are sanitized | AC-004 | TC_LOGIN_004 | Special Characters / Security | Medium | Not Run | — |
+| REQ-005 | PROJ-9 | C50 | Account locks after 5 failed attempts | AC-005 | TC_LOGIN_005 | Account Lockout | High | Not Run | — |
+| REQ-006 | PROJ-10 | C51 | Password reset email sent within 2 minutes | AC-006 | TC_LOGIN_006 | Forgot Password Flow | Medium | Not Run | — |
+| REQ-007 | PROJ-11 | C52 | Remember Me persists session 30 days | AC-007 | TC_LOGIN_007 | Remember Me Functionality | Medium | Not Run | — |
+| REQ-008 | PROJ-12 | C53 | Session expires after 30 min inactivity | AC-008 | TC_LOGIN_008 | Session Timeout | High | Not Run | — |
+| REQ-009 | PROJ-13 | C54 | Logout in one tab affects all tabs | AC-009 | TC_LOGIN_009 | Multiple Browser Tabs | Medium | Not Run | — |
+| REQ-010 | PROJ-14 | C55 | Login page usable on 375px mobile screen | AC-010 | TC_LOGIN_010 | Mobile Responsiveness | Medium | Not Run | — |
+| NFR-001 | TBD | — | Page loads under 2 seconds | — | TC_PERF_001 | Performance Load Test | Medium | Not Run | — |
+| NFR-002 | TBD | — | WCAG 2.1 Level AA accessible | — | TC_A11Y_001 | Accessibility Audit | Medium | Not Run | — |
+| NFR-004 | TBD | — | HTTPS only for auth tokens | — | TC_SEC_001 | HTTPS Token Transmission | High | Not Run | — |
+| NFR-005 | TBD | — | Passwords hashed with bcrypt | — | TC_SEC_002 | Password Storage Audit | High | Not Run | — |
 
 ---
 
