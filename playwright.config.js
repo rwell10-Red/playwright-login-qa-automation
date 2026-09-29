@@ -21,13 +21,13 @@ module.exports = defineConfig({
   reporter: [
     ['list'],
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    // includeProjectInTestName adds the project name (chromium-desktop /
-    // mobile-chrome) to each test in the JUnit XML. This makes the mobile
-    // test file's two runs distinct, avoiding the "Section duplicates"
-    // error when trcli uploads results to TestRail.
+    // JUnit output file. The default name can be overridden per run using
+    // the PLAYWRIGHT_JUNIT_OUTPUT_NAME environment variable. In CI we run
+    // each project separately and give each its own XML file, so every
+    // project's results are recorded (full traceability) without producing
+    // duplicate sections in a single combined file.
     ['junit', {
-      outputFile: 'test-results/junit-results.xml',
-      includeProjectInTestName: true,
+      outputFile: process.env.PLAYWRIGHT_JUNIT_OUTPUT_NAME || 'test-results/junit-results.xml',
     }],
   ],
 
