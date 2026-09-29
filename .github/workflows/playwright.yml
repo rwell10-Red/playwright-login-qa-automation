@@ -108,9 +108,10 @@ jobs:
 
       # -------------------------------------------------------------------
       # 11. Push results to TestRail using trcli
-      #     Reads the JUnit XML and updates the TestRail project by name.
-      #     trcli identifies the project by --project (name), with
-      #     --project-id 2 as a disambiguator.
+      #     Reads the JUnit XML and pushes results to the project by name.
+      #     --case-matcher name matches tests to cases by TITLE instead of
+      #     the automation_id field (which TestRail stored as
+      #     custom_case_automation_id and cannot be renamed).
       #     Credentials come from GitHub Secrets (never exposed in logs).
       #     always() ensures results are pushed even when tests failed.
       # -------------------------------------------------------------------
@@ -126,4 +127,5 @@ jobs:
             --project-id 2 \
             parse_junit \
             --title "Automated Playwright Run - GitHub Actions" \
+            --case-matcher name \
             --file "test-results/junit-results.xml"
