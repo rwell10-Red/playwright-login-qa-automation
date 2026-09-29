@@ -105,3 +105,22 @@ jobs:
           name: test-results
           path: test-results/
           retention-days: 30
+
+      # -------------------------------------------------------------------
+      # 11. Push results to TestRail using trcli
+      #     Reads the JUnit XML and updates TestRail project 2.
+      #     Credentials come from GitHub Secrets (never exposed in logs).
+      #     always() ensures results are pushed even when tests failed.
+      # -------------------------------------------------------------------
+      - name: Push results to TestRail
+        if: always()
+        run: |
+          pip install trcli
+          trcli -y \
+            -h "${{ secrets.TESTRAIL_HOST }}" \
+            -u "${{ secrets.TESTRAIL_USER }}" \
+            -k "${{ secrets.TESTRAIL_API_KEY }}" \
+            --project-id 2 \
+            parse_junit \
+            --title "Automated Playwright Run - GitHub Actions" \
+            --file "test-results/junit-results.xml"
