@@ -108,7 +108,9 @@ jobs:
 
       # -------------------------------------------------------------------
       # 11. Push results to TestRail using trcli
-      #     Reads the JUnit XML and updates TestRail project 2.
+      #     Reads the JUnit XML and updates the TestRail project by name.
+      #     trcli identifies the project by --project (name), with
+      #     --project-id 2 as a disambiguator.
       #     Credentials come from GitHub Secrets (never exposed in logs).
       #     always() ensures results are pushed even when tests failed.
       # -------------------------------------------------------------------
@@ -120,6 +122,7 @@ jobs:
             -h "${{ secrets.TESTRAIL_HOST }}" \
             -u "${{ secrets.TESTRAIL_USER }}" \
             -k "${{ secrets.TESTRAIL_API_KEY }}" \
+            --project "Login Page QA — Week 1 Practical" \
             --project-id 2 \
             parse_junit \
             --title "Automated Playwright Run - GitHub Actions" \
