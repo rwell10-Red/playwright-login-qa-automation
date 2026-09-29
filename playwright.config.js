@@ -21,7 +21,14 @@ module.exports = defineConfig({
   reporter: [
     ['list'],
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    ['junit', { outputFile: 'test-results/junit-results.xml' }],
+    // includeProjectInTestName adds the project name (chromium-desktop /
+    // mobile-chrome) to each test in the JUnit XML. This makes the mobile
+    // test file's two runs distinct, avoiding the "Section duplicates"
+    // error when trcli uploads results to TestRail.
+    ['junit', {
+      outputFile: 'test-results/junit-results.xml',
+      includeProjectInTestName: true,
+    }],
   ],
 
   use: {
