@@ -75,25 +75,14 @@ jobs:
           done
 
       # -------------------------------------------------------------------
-      # 8a. Run the chromium-desktop project
-      #     Writes its own JUnit file. Includes the 3 intentional mobile
-      #     failures (page.tap not supported on desktop).
+      # 8. Run all Playwright tests
+      #    Each spec runs under exactly one project (testIgnore in config),
+      #    so a single run produces one clean JUnit report with no duplicate
+      #    sections and no page.tap failures. continue-on-error keeps the
+      #    pipeline going so reports upload even if a test fails.
       # -------------------------------------------------------------------
-      - name: Run Playwright tests (chromium-desktop)
-        env:
-          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit-reports/junit-chromium-desktop.xml
-        run: npx playwright test --project=chromium-desktop
-        continue-on-error: true
-
-      # -------------------------------------------------------------------
-      # 8b. Run the mobile-chrome project
-      #     Writes its own JUnit file. Mobile tests pass here because the
-      #     Pixel 5 device has touch support (page.tap works).
-      # -------------------------------------------------------------------
-      - name: Run Playwright tests (mobile-chrome)
-        env:
-          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit-reports/junit-mobile-chrome.xml
-        run: npx playwright test --project=mobile-chrome
+      - name: Run Playwright tests
+        run: npx playwright test
         continue-on-error: true
 
       # -------------------------------------------------------------------
@@ -109,32 +98,27 @@ jobs:
           retention-days: 30
 
       # -------------------------------------------------------------------
-      # 10. Upload JUnit results (used later for TestRail push)
+      # 10. Upload JUnit results (used for TestRail push + artifact record)
       # -------------------------------------------------------------------
-      - name: Upload test results
+      - name: Upload JUnit results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
-          path: test-results/
+          name: junit-reports
+          path: junit-reports/
           retention-days: 30
 
       # -------------------------------------------------------------------
-      # 11. Install trcli once for both pushes
-      # -------------------------------------------------------------------
-      - name: Install trcli
-        if: always()
-        run: pip install trcli
-
-      # -------------------------------------------------------------------
-      # 12. Push chromium-desktop results to TestRail
-      #     Each project pushes its own XML for full traceability.
+      # 11. Push results to TestRail using trcli
+      #     Single clean JUnit file (one run, each spec under one project).
       #     --case-matcher name matches tests to cases by TITLE.
       #     Credentials come from GitHub Secrets (never exposed in logs).
+      #     always() ensures results are pushed even when tests failed.
       # -------------------------------------------------------------------
-      - name: Push chromium-desktop results to TestRail
+      - name: Push results to TestRail
         if: always()
         run: |
+          pip install trcli
           trcli -y \
             -h "${{ secrets.TESTRAIL_HOST }}" \
             -u "${{ secrets.TESTRAIL_USER }}" \
@@ -142,23 +126,6 @@ jobs:
             --project "Login Page QA — Week 1 Practical" \
             --project-id 2 \
             parse_junit \
-            --title "Playwright Run (chromium-desktop) - GitHub Actions" \
+            --title "Automated Playwright Run - GitHub Actions" \
             --case-matcher name \
-            --file "junit-reports/junit-chromium-desktop.xml"
-
-      # -------------------------------------------------------------------
-      # 13. Push mobile-chrome results to TestRail
-      # -------------------------------------------------------------------
-      - name: Push mobile-chrome results to TestRail
-        if: always()
-        run: |
-          trcli -y \
-            -h "${{ secrets.TESTRAIL_HOST }}" \
-            -u "${{ secrets.TESTRAIL_USER }}" \
-            -k "${{ secrets.TESTRAIL_API_KEY }}" \
-            --project "Login Page QA — Week 1 Practical" \
-            --project-id 2 \
-            parse_junit \
-            --title "Playwright Run (mobile-chrome) - GitHub Actions" \
-            --case-matcher name \
-            --file "junit-reports/junit-mobile-chrome.xml"
+            --file "junit-reports/junit-results.xml"

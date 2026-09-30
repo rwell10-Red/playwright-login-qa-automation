@@ -21,14 +21,11 @@ module.exports = defineConfig({
   reporter: [
     ['list'],
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    // JUnit output file. The default name can be overridden per run using
-    // the PLAYWRIGHT_JUNIT_OUTPUT_NAME environment variable. In CI we run
-    // each project separately and give each its own XML file, so every
-    // project's results are recorded (full traceability) without producing
-    // duplicate sections in a single combined file.
-    ['junit', {
-      outputFile: process.env.PLAYWRIGHT_JUNIT_OUTPUT_NAME || 'test-results/junit-results.xml',
-    }],
+    // JUnit report for CI ingestion (trcli -> TestRail). Written to a
+    // dedicated folder OUTSIDE test-results/ (which Playwright cleans each
+    // run). With each spec scoped to one project, a single run produces one
+    // clean JUnit file with no duplicate sections.
+    ['junit', { outputFile: 'junit-reports/junit-results.xml' }],
   ],
 
   use: {
@@ -48,9 +45,13 @@ module.exports = defineConfig({
 
   projects: [
     {
-      // Primary: Chromium desktop (all 10 test cases)
+      // Desktop project: runs the desktop functional tests only.
+      // testIgnore excludes the mobile spec so page.tap (which needs touch
+      // support) does not run here. This keeps each spec under exactly one
+      // project — no duplicate report sections, no page.tap failures.
       name: 'chromium-desktop',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: '**/tc_login_010_mobile.spec.js',
     },
     {
       // TC_LOGIN_010: Mobile viewport test
