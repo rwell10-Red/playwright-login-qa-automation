@@ -81,7 +81,7 @@ jobs:
       # -------------------------------------------------------------------
       - name: Run Playwright tests (chromium-desktop)
         env:
-          PLAYWRIGHT_JUNIT_OUTPUT_NAME: test-results/junit-chromium-desktop.xml
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit-reports/junit-chromium-desktop.xml
         run: npx playwright test --project=chromium-desktop
         continue-on-error: true
 
@@ -92,7 +92,7 @@ jobs:
       # -------------------------------------------------------------------
       - name: Run Playwright tests (mobile-chrome)
         env:
-          PLAYWRIGHT_JUNIT_OUTPUT_NAME: test-results/junit-mobile-chrome.xml
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit-reports/junit-mobile-chrome.xml
         run: npx playwright test --project=mobile-chrome
         continue-on-error: true
 
@@ -144,7 +144,7 @@ jobs:
             parse_junit \
             --title "Playwright Run (chromium-desktop) - GitHub Actions" \
             --case-matcher name \
-            --file "test-results/junit-chromium-desktop.xml"
+            --file "junit-reports/junit-chromium-desktop.xml"
 
       # -------------------------------------------------------------------
       # 13. Push mobile-chrome results to TestRail
@@ -161,4 +161,4 @@ jobs:
             parse_junit \
             --title "Playwright Run (mobile-chrome) - GitHub Actions" \
             --case-matcher name \
-            --file "test-results/junit-mobile-chrome.xml"
+            --file "junit-reports/junit-mobile-chrome.xml"
