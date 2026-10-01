@@ -947,3 +947,173 @@ simpler choice.
 - fix/ folder documents all 10 issues with solutions and doc references
 - Option A fix applied locally, verified against docs, ready to push
 - Pending: push Option A, confirm all-green run + clean TestRail push (the finale)
+
+
+---
+
+## Final Session — Closing Tasks and Project Completion
+
+---
+
+### Git vs GitHub Clarification
+
+Git and GitHub are two different things:
+- Git = version control tool on your local machine (git add, git commit, git log)
+- GitHub = cloud hosting service for Git repositories (git push sends local commits there)
+
+Both are used in this project. Every `git add` + `git commit` saves locally. Every
+`git push` sends that to GitHub. The code lives in both places — local machine AND
+`github.com/rwell10-Red/login-page-qa-week1`.
+
+---
+
+### Jira Board Cleanup (Task 11)
+
+Cleaned up stale placeholder tickets:
+- PROJ-1, PROJ-2, PROJ-3 deleted
+- SCRUM Sprint 0 completed (was empty)
+- SCRUM Sprint 2 deleted (was empty)
+- Backlog confirmed empty: "Your backlog is empty"
+
+Sprint 1 — Login Page QA was already completed (10/10 tickets Done, confirmed
+on Jira Summary page showing "10 completed in the last 7 days").
+
+Note: Jira's new Spaces (team-managed) interface does NOT have a traditional Sprint
+Report feature. The Summary tab serves as the equivalent, showing completion metrics
+and a status donut chart.
+
+Jira does not auto-update ticket status from Playwright/TestRail/GitHub. The
+status transition (To Do → Done) is a deliberate human step — even in professional
+teams. Auto-transition via the Jira REST API is an advanced enhancement for a
+future sprint.
+
+---
+
+### TestRail Automated Runs Verified (Task 12)
+
+Confirmed in TestRail → Test Runs & Results:
+
+| Run | Date | Results |
+|---|---|---|
+| Automated Playwright Run - GitHub Actions | 10/1/2026 | 21 Passed, 100% |
+| Automated Playwright Run - GitHub Actions | 10/1/2026 | 21 Passed, 100% |
+| Automated Playwright Run - GitHub Actions | 9/30/2026 | 21 Passed, 100% |
+| Playwright Run (mobile-chrome) - GitHub Actions | 9/29/2026 | 4 Passed, 100% |
+| Sprint 1 - Integration Test | 9/8/2026 | Stale/throwaway — to be deleted |
+
+All runs created automatically by trcli via the CI/CD pipeline on every git push.
+No manual entry required. Full automation chain confirmed working end to end.
+
+---
+
+### RTM Updated (Task 10)
+
+Updated requirements-acceptance-rtm.md:
+- Version bumped to 1.1
+- All 10 functional requirements: Not Run → Pass
+- REQ-010 records DEF-001 (Closed) in the Defect ID column
+- NFRs remain Not Run (correctly deferred)
+- Definition of Done — all 7 checkboxes ticked for functional requirements
+- New Part 6: Test Execution Summary added with full metrics and defect log
+- Sign-off table updated: all roles Approved, September 2026
+
+---
+
+### Sprint Review Document Written (Task 13)
+
+Created sprint-review.md — the capstone deliverable covering:
+1. Sprint Goal — achieved
+2. What Was Planned
+3. What Was Delivered (app, test cases, Playwright suite, RTM, CI/CD, tools)
+4. Test Execution Results (25/25 passed, TestRail runs confirmed)
+5. Defects (DEF-001 raised and closed)
+6. Integration Issues (10 obstacles, all resolved, ref fix/ folder)
+7. Documentation Delivered (40+ files)
+8. Skills Demonstrated (QA process, SDET/automation, tools)
+9. Deferred Work (NFRs, Jira auto-transition, Slack notifications)
+10. Sprint Metrics (100% requirement coverage, 12 commits, 5 tools integrated)
+11. Sign-Off
+
+---
+
+### Practice Test Written by Learner (Task 14)
+
+Test case assigned:
+```
+TC_LOGIN_PRACTICE - Forgot password link navigates and confirms message
+Preconditions: Flask app running
+Steps: goto /login → click #forgot-password-link →
+       fill #email with user@example.com → click #send-reset-btn
+Expected: URL is /forgot-password, #reset-confirmation visible and contains
+          "If this email is registered"
+```
+
+Learner wrote the test iteratively over several attempts:
+- Attempt 1: passed page object to goto instead of URL string
+- Attempt 2: used plain English descriptions instead of CSS selectors
+- Attempt 3: extra argument on page.click, wrong URL in assertion, syntax errors
+- Attempt 4: one stray underscore remaining in locator
+- Attempt 5: em dash encoding issue (— saved as â€") causing "No tests found"
+- Attempt 6: fixed encoding, test ran
+
+Final result:
+```
+1 passed (6.1s)
+ok 1 > TC_LOGIN_PRACTICE - Forgot password link navigates and confirms message (2.4s)
+```
+
+The test was committed and pushed — triggering the CI/CD pipeline with 26 tests
+total (25 original + 1 practice).
+
+---
+
+### Final Documentation Committed
+
+All remaining files committed to Git and pushed to GitHub:
+- cli-quick-reference/ (9 files) — all commands explained
+- chat.md — updated to full session
+- requirements-acceptance-rtm.md — v1.1 with execution results
+- sprint-review.md — final deliverable
+
+Git log at project close: 13+ commits on main branch.
+
+---
+
+### Project Complete — Final State
+
+```
+DELIVERED:
+✓ Flask login app (Python, Flask, SQLite)
+✓ 26 Playwright automated tests (25 + practice)
+✓ Full documentation (40+ files across 8 categories)
+✓ Jira project — Sprint 1 complete, 10/10 requirements Done
+✓ TestRail — 10 cases, automated runs pushing on every push
+✓ TestRail-Jira integration active
+✓ GitHub repo — rwell10-Red/login-page-qa-week1
+✓ CI/CD pipeline — fully automated, green
+✓ trcli — results auto-pushed to TestRail
+✓ fix/ folder — 10 issues documented with factual references
+✓ CLI quick reference — 9 files, all commands explained
+✓ Sprint Review — professional capstone document
+
+DEFERRED TO FUTURE SPRINT:
+- NFR testing (performance, accessibility, security, HTTPS audit)
+- Jira ticket auto-transition via REST API
+- GitHub Actions Slack notifications
+```
+
+### Tools and Versions Used
+
+| Tool | Version | Purpose |
+|---|---|---|
+| Python | 3.11.9 | Flask app runtime |
+| Flask | 3.1.3 | Web framework |
+| Flask-Login | 0.6.3 | Session management |
+| Flask-SQLAlchemy | 3.1.1 | Database ORM |
+| Node.js | v24.19.0 | Playwright runtime |
+| Playwright | 1.62.1 | Test automation |
+| trcli | 1.15.2 | TestRail CLI |
+| Git | 2.55.0 | Version control |
+| GitHub CLI (gh) | 2.98.0 | Repo + CI management |
+| Jira | Spaces (team-managed) | Project management |
+| TestRail | Enterprise trial | Test case management |
