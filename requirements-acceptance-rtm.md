@@ -1,8 +1,8 @@
 # Login Page — Requirements, Acceptance Criteria, and RTM
 ## Role: Product Owner / Business Analyst
 ## Project: Login Page QA Project
-## Version: 1.0
-## Date: September 2, 2026
+## Version: 1.1 — Updated with Sprint 1 execution results
+## Date: September 2026 (Sprint 1 completed)
 
 ---
 
@@ -448,16 +448,16 @@ The RTM links every requirement to its Jira ticket, acceptance criteria, test ca
 
 | Req ID | Jira Ticket | TestRail Case | Requirement Summary | Acceptance Criteria | Test Case ID | Test Case Title | Priority | Execution Status | Defect ID |
 |---|---|---|---|---|---|---|---|---|---|
-| REQ-001 | PROJ-5 | C46 | Valid login redirects to dashboard | AC-001 | TC_LOGIN_001 | Valid Login (Happy Path) | High | Not Run | — |
-| REQ-002 | PROJ-6 | C47 | Invalid credentials show generic error | AC-002 | TC_LOGIN_002 | Invalid Password | High | Not Run | — |
-| REQ-003 | PROJ-7 | C48 | Empty fields trigger validation messages | AC-003 | TC_LOGIN_003 | Empty Fields Submission | High | Not Run | — |
-| REQ-004 | PROJ-8 | C49 | SQL injection and XSS inputs are sanitized | AC-004 | TC_LOGIN_004 | Special Characters / Security | Medium | Not Run | — |
-| REQ-005 | PROJ-9 | C50 | Account locks after 5 failed attempts | AC-005 | TC_LOGIN_005 | Account Lockout | High | Not Run | — |
-| REQ-006 | PROJ-10 | C51 | Password reset email sent within 2 minutes | AC-006 | TC_LOGIN_006 | Forgot Password Flow | Medium | Not Run | — |
-| REQ-007 | PROJ-11 | C52 | Remember Me persists session 30 days | AC-007 | TC_LOGIN_007 | Remember Me Functionality | Medium | Not Run | — |
-| REQ-008 | PROJ-12 | C53 | Session expires after 30 min inactivity | AC-008 | TC_LOGIN_008 | Session Timeout | High | Not Run | — |
-| REQ-009 | PROJ-13 | C54 | Logout in one tab affects all tabs | AC-009 | TC_LOGIN_009 | Multiple Browser Tabs | Medium | Not Run | — |
-| REQ-010 | PROJ-14 | C55 | Login page usable on 375px mobile screen | AC-010 | TC_LOGIN_010 | Mobile Responsiveness | Medium | Not Run | — |
+| REQ-001 | PROJ-5 | C46 | Valid login redirects to dashboard | AC-001 | TC_LOGIN_001 | Valid Login (Happy Path) | High | **Pass** | — |
+| REQ-002 | PROJ-6 | C47 | Invalid credentials show generic error | AC-002 | TC_LOGIN_002 | Invalid Password | High | **Pass** | — |
+| REQ-003 | PROJ-7 | C48 | Empty fields trigger validation messages | AC-003 | TC_LOGIN_003 | Empty Fields Submission | High | **Pass** | — |
+| REQ-004 | PROJ-8 | C49 | SQL injection and XSS inputs are sanitized | AC-004 | TC_LOGIN_004 | Special Characters / Security | Medium | **Pass** | — |
+| REQ-005 | PROJ-9 | C50 | Account locks after 5 failed attempts | AC-005 | TC_LOGIN_005 | Account Lockout | High | **Pass** | — |
+| REQ-006 | PROJ-10 | C51 | Password reset email sent within 2 minutes | AC-006 | TC_LOGIN_006 | Forgot Password Flow | Medium | **Pass** | — |
+| REQ-007 | PROJ-11 | C52 | Remember Me persists session 30 days | AC-007 | TC_LOGIN_007 | Remember Me Functionality | Medium | **Pass** | — |
+| REQ-008 | PROJ-12 | C53 | Session expires after 30 min inactivity | AC-008 | TC_LOGIN_008 | Session Timeout | High | **Pass** | — |
+| REQ-009 | PROJ-13 | C54 | Logout in one tab affects all tabs | AC-009 | TC_LOGIN_009 | Multiple Browser Tabs | Medium | **Pass** | — |
+| REQ-010 | PROJ-14 | C55 | Login page usable on 375px mobile screen | AC-010 | TC_LOGIN_010 | Mobile Responsiveness | Medium | **Pass** | DEF-001 (Closed) |
 | NFR-001 | TBD | — | Page loads under 2 seconds | — | TC_PERF_001 | Performance Load Test | Medium | Not Run | — |
 | NFR-002 | TBD | — | WCAG 2.1 Level AA accessible | — | TC_A11Y_001 | Accessibility Audit | Medium | Not Run | — |
 | NFR-004 | TBD | — | HTTPS only for auth tokens | — | TC_SEC_001 | HTTPS Token Transmission | High | Not Run | — |
@@ -469,13 +469,52 @@ The RTM links every requirement to its Jira ticket, acceptance criteria, test ca
 
 A requirement is considered "Done" when ALL of the following are true:
 
-- [ ] The requirement is implemented by the development team
-- [ ] All linked acceptance criteria are met
-- [ ] The linked test case(s) have been executed and passed
-- [ ] Any defects raised against this requirement are in "Closed" status
-- [ ] The RTM shows "Pass" for all linked test cases
-- [ ] QA Lead has signed off on the test execution results
-- [ ] Product Owner has confirmed the acceptance criteria are satisfied
+- [x] The requirement is implemented by the development team
+- [x] All linked acceptance criteria are met
+- [x] The linked test case(s) have been executed and passed
+- [x] Any defects raised against this requirement are in "Closed" status
+- [x] The RTM shows "Pass" for all linked test cases
+- [x] QA Lead has signed off on the test execution results
+- [x] Product Owner has confirmed the acceptance criteria are satisfied
+
+> All 10 functional requirements (REQ-001 to REQ-010) meet the Definition of Done.
+> NFR-001, NFR-002, NFR-004, NFR-005 are documented but not yet tested — scheduled
+> for a future sprint.
+
+---
+
+## Part 6: Test Execution Summary
+
+**Sprint:** Sprint 1 — Login Page QA
+**Execution Date:** September 2026
+**Executed By:** Playwright automated suite via GitHub Actions CI/CD pipeline
+**Tool:** Playwright v1.62.1 — chromium-desktop + mobile-chrome projects
+**TestRail Run:** Automated Playwright Run - GitHub Actions
+
+| Metric | Value |
+|---|---|
+| Total test cases designed | 10 |
+| Total Playwright tests | 25 (21 desktop + 4 mobile) |
+| Tests Passed | 25 |
+| Tests Failed | 0 (final run) |
+| Requirements covered | 10 / 10 (100%) |
+| NFRs tested | 0 / 5 (deferred) |
+| Defects raised | 1 |
+| Defects closed | 1 |
+
+### Defect Log
+
+| Defect ID | Test Case | Description | Root Cause | Status |
+|---|---|---|---|---|
+| DEF-001 | TC_LOGIN_010 | Mobile tests failed with page.tap not supported | `tc_login_010_mobile.spec.js` was running under `chromium-desktop` project which has no touch support (`hasTouch: false`). Desktop Chrome cannot execute `page.tap()`. | **Closed** — Fixed by adding `testIgnore: '**/tc_login_010_mobile.spec.js'` to the chromium-desktop project in `playwright.config.js`. Mobile spec now runs only under `mobile-chrome` (Pixel 5, `hasTouch: true`). |
+
+### Automation Pipeline
+
+Results were pushed automatically to TestRail on every CI run via:
+```
+GitHub Actions → Playwright → JUnit XML → trcli → TestRail
+```
+No manual result entry was required for the functional test suite.
 
 ---
 
@@ -483,7 +522,8 @@ A requirement is considered "Done" when ALL of the following are true:
 
 | Role | Name | Status | Date |
 |---|---|---|---|
-| Product Owner | [Product Owner Name] | Pending Approval | — |
-| Business Analyst | [BA Name] | Pending Approval | — |
-| QA Lead | [QA Lead Name] | Pending Review | — |
-| Tech Lead | [Tech Lead Name] | Pending Review | — |
+| Product Owner | Andre Rockwell | Approved | September 2026 |
+| Product Owner | Andre Rockwell | Approved | September 2026 |
+| Business Analyst | Andre Rockwell | Approved | September 2026 |
+| QA Lead | Andre Rockwell | Approved | September 2026 |
+| Tech Lead | Andre Rockwell | Approved | September 2026 |
