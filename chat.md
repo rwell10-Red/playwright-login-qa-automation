@@ -777,3 +777,173 @@ Step 2 — Run Playwright tests (in a second terminal):
   npx playwright show-report                 (open HTML results)
 
 App URL: http://127.0.0.1:5000/login
+
+
+---
+
+## Messages 8+ — Tool Integration, CI/CD, and Debugging (Summary)
+
+This section summarizes the extended work after the Flask app and Playwright tests
+were built. It covers the tool stack setup, the CI/CD pipeline, and every issue
+encountered with its solution.
+
+---
+
+### Tool Stack Questions Answered
+
+- Playwright is NOT a project management tool — it is a test execution framework.
+- Playwright does not integrate with Jira natively; TestRail/Xray do.
+- Correct stack: Jira (PM + defects), TestRail (test cases + manual execution),
+  Playwright (automation). Xray not needed since TestRail is used.
+- CLI availability: Playwright has a full CLI; Jira and TestRail have REST APIs
+  plus community CLIs (jira-cli, trcli). Confirmed GitHub CLI (gh) installed.
+
+### Machine Assessment
+
+Already installed: Node v24.19.0, npm 11.17.0, Python 3.11.9, Git 2.55.0, Java 21,
+Flask 3.1.3, Flask-Login, Flask-CORS, Werkzeug, Jinja2, pytest, Selenium, requests,
+locust, Playwright 1.62.1, Cypress, Appium. Installed during project: sqlalchemy,
+flask-sqlalchemy, @playwright/test, chromium browser, trcli.
+
+### App Framework Options Discussed
+
+Flask (chosen — already installed), Node+Express, Django, FastAPI, or existing demo
+apps (saucedemo, the-internet). Flask chosen because everything was already present.
+
+### GitHub Purpose Explained
+
+Code backup, CI/CD via GitHub Actions, and version control. Not required to run
+locally but enables the automated pipeline.
+
+---
+
+### Requirements Document Created (Product Owner/BA role)
+
+Created requirements-acceptance-rtm.md with:
+- 10 Functional Requirements (REQ-001 to REQ-010)
+- 5 Non-Functional Requirements (NFR-001 to NFR-005) — documented, not ticketed
+- 10 Acceptance Criteria in Gherkin (AC-001 to AC-010)
+- RTM linking REQ -> Jira -> TestRail -> Test Case -> Status
+- Definition of Done
+
+Who provides requirements/acceptance criteria: BA writes descriptions, Product Owner
+writes acceptance criteria, QA reviews/refines. Discussed the Three Amigos meeting.
+
+---
+
+### Jira Setup
+
+- Project: Rockwell, key changed to PROJ
+- 10 requirement tickets created: PROJ-5 through PROJ-14 (as Stories)
+- Descriptions + Gherkin acceptance criteria added to each
+- Sprint 1 started with all 10 tickets
+- Bug work type added (was missing from the team-managed Software space)
+- Learned the new Jira "Spaces" terminology: Space, Space settings, Work types
+
+### TestRail Setup
+
+- Signed up (Enterprise trial), created project "Login Page QA — Week 1 Practical"
+  (project ID 2)
+- Single-repository test suite
+- 10 test cases created: C46 through C55 (mapped to TC_LOGIN_001-010)
+- References field linked each case to its Jira ticket (PROJ-5 to PROJ-14)
+- TestRail-Jira integration connected (Defects + References) after fixing a
+  malformed URL (trailing slash)
+- Verified a defect push worked (created a test bug in Jira)
+
+### RTM Updated
+
+Added a TestRail Case ID column (C46-C55) for full four-tool traceability:
+REQ-001 -> PROJ-5 -> C46 -> TC_LOGIN_001.
+
+---
+
+### Playwright UI Mode
+
+Launched `npx playwright test --ui` to visually inspect tests. Confirmed the 3
+mobile test failures (page.tap error) with screenshots and time-travel debugging.
+
+### Test Results
+
+Real execution: 22 passed, 3 failed. The 3 failures were TC_LOGIN_010 mobile
+variants failing under the desktop project (page.tap not supported on desktop).
+User chose to KEEP the failures initially so the pipeline could demonstrate
+catching real defects.
+
+---
+
+### CI/CD Pipeline Built
+
+- Code pushed to GitHub: rwell10-Red/login-page-qa-week1 (private) via gh CLI
+- Created .github/workflows/playwright.yml
+- Pipeline: checkout -> Python -> Flask deps -> Node -> Playwright -> start Flask
+  -> run tests -> upload HTML report + JUnit XML as artifacts
+- First run succeeded: all steps green, 3 failures caught, reports uploaded
+- Then added trcli step to push results to TestRail (Phase 4)
+- Added GitHub Secrets: TESTRAIL_HOST, TESTRAIL_USER, TESTRAIL_API_KEY
+
+---
+
+### Issues Encountered and Solved (documented in fix/ folder)
+
+1. Jira invalid URL — missing https://
+2. Jira OAuth / trailing slash — removed /jira suffix and trailing slash
+3. Jira Bug work type missing — added via Space settings -> Work types
+4. trcli wrong argument — --project-id -> --project (name)
+5. trcli automation_id field not configured — created the custom field
+6. trcli automation_id name mismatch — field stored as custom_case_automation_id;
+   discovered via TestRail API (curl); bypassed with --case-matcher name
+7. trcli duplicate sections — mobile spec ran under two projects, duplicate section
+   names in one XML
+8. Playwright JUnit file overwrite — test-results/ is cleaned each run; second run
+   deleted first run's XML; moved reports to junit-reports/
+9. Playwright mobile tap on desktop — page.tap needs hasTouch; fixed with testIgnore
+10. Shell grep not found — used PowerShell Select-String / switched to Git Bash
+
+Each issue has a dedicated file in fix/ with error, root cause, diagnosis, solution,
+and lesson learned. Files 08 and 09 include factual verification against official
+Playwright documentation.
+
+---
+
+### Debugging Skills Demonstrated
+
+- Reading CI logs from the CLI: gh run list, gh run view --log-failed
+- Errors live at the bottom of the log, above "exit code 1"
+- Querying the TestRail REST API with curl to inspect field configuration
+  (the source of truth vs the UI)
+- Distinguishing HTTP status codes (404 address vs 401 auth)
+- Verifying fixes against official docs before applying
+
+---
+
+### Final Fix — Option A (verified against Playwright docs)
+
+Chosen over separate-files (B2) and blob-merge approaches. Adds
+`testIgnore: '**/tc_login_010_mobile.spec.js'` to the chromium-desktop project so:
+- Desktop project runs login.spec.js only (no page.tap failures)
+- Mobile project runs the mobile spec only (Pixel 5 has hasTouch)
+- Single run, single clean JUnit report (no duplicate sections)
+- JUnit written to junit-reports/ (outside the cleaned test-results/)
+- One trcli push to TestRail
+
+This one config change resolves issues 7, 8, and 9 simultaneously. Verified against
+official Playwright docs (Touchscreen, Test projects, outputDir cleaning behavior).
+
+### Best Practice Note
+
+For large suites needing multiple projects across many CI machines, the official
+scaling solution is the Blob reporter + merge-reports (Playwright sharding docs).
+For this project's size, Option A (proper per-project scoping) is the correct and
+simpler choice.
+
+---
+
+### Current State (end of this session segment)
+
+- All core deliverables built and on GitHub
+- CI/CD pipeline running on every push
+- trcli TestRail push proven working (mobile-chrome push created TestRail run #14)
+- fix/ folder documents all 10 issues with solutions and doc references
+- Option A fix applied locally, verified against docs, ready to push
+- Pending: push Option A, confirm all-green run + clean TestRail push (the finale)
