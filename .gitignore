@@ -38,3 +38,7 @@ Thumbs.db
 # Environment variables — never commit secrets
 .env
 *.env
+
+# Documentation files — kept local only
+chat.md
+explanations/
