@@ -415,3 +415,19 @@ test('TC_LOGIN_009b — Both tabs active while logged in share the same session'
 
   await context.close();
 });
+test('TC_LOGIN_PRACTICE — Forgot password link navigates and confirms message', async ({ page }) => {
+
+    // ARRANGE — get to the starting point
+    await page.goto('/login');
+
+    // ACT — user actions
+    await page.click('#forgot-password-link');    // click forgot password link
+    await page.fill('#email', 'user@example.com');       // fill email field
+    await page.click('#send-reset-btn');        // click send reset button
+
+    // ASSERT — verify what should have happened
+    await expect(page).toHaveURL(/\/forgot-password/);              // check the URL
+    await expect(page.locator('#reset-confirmation')).toBeVisible();  // check the message exists
+    await expect(page.locator('#reset-confirmation')).toContainText('If this email is registered'); // check the message text
+
+});
