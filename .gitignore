@@ -42,3 +42,14 @@ Thumbs.db
 # Documentation files — kept local only
 chat.md
 explanations/
+
+# ===== Local-only learning/process notes (kept on disk, never pushed) =====
+# Public repo keeps README + genuine QA deliverables only
+# (requirements-acceptance-rtm.md and sprint-review.md stay tracked).
+cli-quick-reference/
+fix/
+playwright-test-pattern.md
+project-steps-full-picture.md
+qa-steps-1-4.md
+qa-learning-steps.md
+test-framework-recommendations.md
